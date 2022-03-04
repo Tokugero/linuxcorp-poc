@@ -84,6 +84,7 @@ services:
     build: build/guacamole/.
     restart: unless-stopped
     environment:
+      - MYSQL_HOSTNAME=mariadb
       - MYSQL_DATABASE=mariadb
       - MYSQL_USER=${GUAC_DB_USER}
       - MYSQL_PASSWORD=${GUAC_DB_PASS}
