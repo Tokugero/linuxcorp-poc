@@ -69,6 +69,22 @@ services:
       - MYSQL_HOST=mariadb
       - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
       - MYSQL_USER=${OSTICKET_DB_USER}
+  osticket-mariadb:
+    #3306
+    build: build/osticket-mariadb/.
+    restart: unless-stopped
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+      - MYSQL_DATABASE=osticket
+      - MYSQL_USER=${OSTICKET_DB_USER}
+      - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
+    volumes:
+      - ./data/osticket-mariadb/config:/config
+    networks:
+      - default
+      - wireguard
   dokuwiki-ui:
     #80
     build: build/dokuwiki-ui/.
@@ -84,22 +100,24 @@ services:
     build: build/guacamole/.
     restart: unless-stopped
     environment:
-      - MYSQL_HOSTNAME=mariadb
-      - MYSQL_DATABASE=mariadb
+      - MYSQL_HOSTNAME=guacamole-mariadb
+      - MYSQL_DATABASE=guacamole
       - MYSQL_USER=${GUAC_DB_USER}
       - MYSQL_PASSWORD=${GUAC_DB_PASS}
       - GUACD_HOSTNAME=guacd
-  mariadb:
+  guacamole-mariadb:
     #3306
-    build: build/mariadb/.
+    build: build/guacamole-mariadb/.
     restart: unless-stopped
     environment:
       - PUID=${USERID}
       - PGID=${USERID}
-      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
       - TZ=${TIMEZONE}
+      - MYSQL_DATABASE=guacamole
+      - MYSQL_USER=${GUAC_DB_USER}
+      - MYSQL_PASSWORD=${GUAC_DB_PASS}
     volumes:
-      - ./data/mariadb/config:/config
+      - ./data/guacamole-mariadb/config:/config
     networks:
       - default
       - wireguard
@@ -173,7 +191,7 @@ services:
       - wireguard
     restart: unless-stopped
     environment:
-      - PMA_HOST=mariadb
+      - PMA_HOSTS=osticket-mariadb,guacamole-mariadb
   duplicati:
     #8200
     build: build/duplicati/.

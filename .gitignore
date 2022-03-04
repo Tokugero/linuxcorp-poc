@@ -17,3 +17,11 @@ data/swag-proxy/config/*
 data/swag-proxy/config/nginx/*
 !data/swag-proxy/config/nginx
 !data/swag-proxy/config/nginx/proxy-confs/
+
+# Guacamole init
+data/guacamole-mariadb/*
+!data/guacamole-mariadb
+data/guacamole-mariadb/config/*
+!data/guacamole-mariadb/config
+data/guacamole-mariadb/config/initdb.d
+!data/guacamole-mariadb/config/initdb.d/
