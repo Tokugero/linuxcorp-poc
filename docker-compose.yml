@@ -1,0 +1,217 @@
+services:
+  # Central Authentication for Services
+  ldap-db: #1389 1636
+    # https://raw.githubusercontent.com/bitnami/bitnami-docker-openldap/master/docker-compose.yml
+    build: ldap-db/.
+    volumes:
+      - './data/ldap-db:/bitnami/openldap'
+    environment:
+      - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
+      - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
+      - LDAP_USERS=${LDAP_SERVICE_BIND_USER}
+      - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
+    restart: unless-stopped
+  ldap-ui: #443
+    build: ldap-ui/.
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldap-db
+    restart: unless-stopped
+
+  # Central Ingress for Web Applications
+  swag-proxy: #443
+    build: swag-proxy/.
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+      - URL=${SWAG_URL}
+      - VALIDATION=http
+      - SUBDOMAINS=grafana,ofbiz,osticket,wiki,desktop
+      - EMAIL=${LE_EMAIL}
+      - STAGING=${LE_TESTING}
+    volumes:
+      - ./data/swag-proxy/config:/config
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+  authelia-sso:
+    build: authelia-sso/.
+    environment:
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./data/authelia-sso:/config
+    restart: unless-stopped
+
+  # Infrastructure Suite
+  grafana-ui: #3000
+    build: grafana-ui/.
+    restart: unless-stopped
+    volumes:
+        - grafana:/var/lib/grafana
+        - ./data/grafana-ui/provisioning:/etc/grafana/provisioning
+  #TODO
+  ofbiz-ui: #8080 8443
+    build: ofbiz-ui/.
+    restart: unless-stopped
+  osticket-ui: #80
+    build: osticket-ui/.
+    restart: unless-stopped
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
+      - MYSQL_USER=${OSTICKET_DB_USER}
+  dokuwiki-ui: #80
+    build: dokuwiki-ui/.
+    restart: unless-stopped
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./data/dokuwiki-ui/config:/config
+  guacamole: #8080
+    build: guacamole/.
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=mariadb
+      - MYSQL_USER=${GUAC_DB_USER}
+      - MYSQL_PASSWORD=${GUAC_DB_PASS}
+  mariadb: #3306
+    build: mariadb/.
+    restart: unless-stopped
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./data/mariadb/config:/config
+    networks:
+      - default
+      - wireguard
+
+  # Monitoring Services
+  prometheus-db: #9090
+    build: prometheus-db/.
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheusdb/config:/etc/prometheus/
+      - prometheusdb:/prometheus
+  prometheus-scraper: #9116
+    build: prometheus-scraper/.
+    restart: unless-stopped
+    ports: 
+      - "9116:9116"
+    volumes:
+      - ./prometheus-proxy/config:/opt/config/snmp_exporter
+
+# Break-the-glass access
+  wireguard: #51820
+    build: wireguard/.
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+      - SERVERURL=wireguard.${SWAG_URL}
+      - SERVERPORT=51820
+      - PEERS=1
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.13.13.0
+      - ALLOWEDIPS=0.0.0.0/0
+    volumes:
+      - ./data/wireguard/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      - default
+      - wireguard
+  yacht-admin: #8000
+    build: yacht-admin/.
+    restart: unless-stopped
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - SECRET_KEY=${YACHT_SECRET_KEY}
+      - ADMIN_EMAIL=${YACHT_ADMIN_EMAIL}
+      - DISABLE_AUTH=true
+    networks:
+      - wireguard
+    volumes:
+      - ./data/yacht-admin:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+  phpMyAdmin: #80
+    networks:
+      - wireguard
+    restart: unless-stopped
+    environment:
+      - PMA_HOST=mariadb
+  duplicati: #8200
+    build: duplicati/.
+    restart: unless-stopped
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./data/duplicati/config:/config
+      - backup:/backups
+    networks:
+      - wireguard
+
+  # Generic Desktop 
+  guacd: #4822
+    build: guacd/.
+    restart: unless-stopped
+  support-desktop-shared: #3389
+    build: support-desktop-shared/.
+    restart: unless-stopped
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+    shm_size: "1gb"
+  admin-desktop-shared: #3389
+    build: admin-desktop-shared/.
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - default
+      - wireguard
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+    shm_size: "1gb"
+  technical-desktop-shared: #3389
+    build: technical-desktop-shared/.
+    restart: unless-stopped
+    environment:
+      - PUID=${USERID}
+      - PGID=${USERID}
+      - TZ=${TIMEZONE}
+    shm_size: "1gb"
+
+
+  # UserScript should create dedicated desktops and destroy dedicated desktops based on user
+  # creation & deletion
+
+volumes:
+  backup:
+  prometheusdb:
+  grafana:
+
+networks:
+  default:
+  wireguard:
