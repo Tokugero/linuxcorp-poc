@@ -87,6 +87,7 @@ services:
       - MYSQL_DATABASE=mariadb
       - MYSQL_USER=${GUAC_DB_USER}
       - MYSQL_PASSWORD=${GUAC_DB_PASS}
+      - GUACD_HOSTNAME=guacd
   mariadb:
     #3306
     build: build/mariadb/.
