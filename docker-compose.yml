@@ -1,6 +1,7 @@
 services:
   # Central Authentication for Services
-  ldap-db: #1389 1636
+  ldap-db:
+    #1389 1636
     # https://raw.githubusercontent.com/bitnami/bitnami-docker-openldap/master/docker-compose.yml
     build: build/ldap-db/.
     volumes:
@@ -11,14 +12,16 @@ services:
       - LDAP_USERS=${LDAP_SERVICE_BIND_USER}
       - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
     restart: unless-stopped
-  ldap-ui: #443
+  ldap-ui:
+    #443
     build: build/ldap-ui/.
     environment:
       - PHPLDAPADMIN_LDAP_HOSTS=ldap-db
     restart: unless-stopped
 
   # Central Ingress for Web Applications
-  swag-proxy: #443
+  swag-proxy:
+    #443
     build: build/swag-proxy/.
     cap_add:
       - NET_ADMIN
@@ -28,7 +31,7 @@ services:
       - TZ=${TIMEZONE}
       - URL=${SWAG_URL}
       - VALIDATION=http
-      - SUBDOMAINS=grafana,ofbiz,osticket,wiki,desktop
+      - SUBDOMAINS=grafana,ofbiz,osticket,wiki,desktop,duplicati
       - EMAIL=${LE_EMAIL}
       - STAGING=${LE_TESTING}
     volumes:
@@ -46,24 +49,28 @@ services:
     restart: unless-stopped
 
   # Infrastructure Suite
-  grafana-ui: #3000
+  grafana-ui:
+    #3000
     build: build/grafana-ui/.
     restart: unless-stopped
     volumes:
-        - grafana:/var/lib/grafana
-        - ./data/grafana-ui/provisioning:/etc/grafana/provisioning
+      - grafana:/var/lib/grafana
+      - ./data/grafana-ui/provisioning:/etc/grafana/provisioning
   #TODO
-  ofbiz-ui: #8080 8443
+  ofbiz-ui:
+    #8080 8443
     build: build/ofbiz-ui/.
     restart: unless-stopped
-  osticket-ui: #80
+  osticket-ui:
+    #80
     build: build/osticket-ui/.
     restart: unless-stopped
     environment:
       - MYSQL_HOST=mariadb
       - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
       - MYSQL_USER=${OSTICKET_DB_USER}
-  dokuwiki-ui: #80
+  dokuwiki-ui:
+    #80
     build: build/dokuwiki-ui/.
     restart: unless-stopped
     environment:
@@ -72,14 +79,16 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ./data/dokuwiki-ui/config:/config
-  guacamole: #8080
+  guacamole:
+    #8080
     build: build/guacamole/.
     restart: unless-stopped
     environment:
       - MYSQL_DATABASE=mariadb
       - MYSQL_USER=${GUAC_DB_USER}
       - MYSQL_PASSWORD=${GUAC_DB_PASS}
-  mariadb: #3306
+  mariadb:
+    #3306
     build: build/mariadb/.
     restart: unless-stopped
     environment:
@@ -94,7 +103,8 @@ services:
       - wireguard
 
   # Monitoring Services
-  prometheus-db: #9090
+  prometheus-db:
+    #9090
     build: build/prometheus-db/.
     restart: unless-stopped
     ports:
@@ -102,16 +112,18 @@ services:
     volumes:
       - ./prometheusdb/config:/etc/prometheus/
       - prometheusdb:/prometheus
-  prometheus-scraper: #9116
+  prometheus-scraper:
+    #9116
     build: build/prometheus-scraper/.
     restart: unless-stopped
-    ports: 
+    ports:
       - "9116:9116"
     volumes:
       - ./prometheus-proxy/config:/opt/config/snmp_exporter
 
-# Break-the-glass access
-  wireguard: #51820
+  # Break-the-glass access
+  wireguard:
+    #51820
     build: build/wireguard/.
     restart: unless-stopped
     cap_add:
@@ -137,7 +149,8 @@ services:
     networks:
       - default
       - wireguard
-  yacht-admin: #8000
+  yacht-admin:
+    #8000
     build: build/yacht-admin/.
     restart: unless-stopped
     environment:
@@ -151,14 +164,16 @@ services:
     volumes:
       - ./data/yacht-admin:/config
       - /var/run/docker.sock:/var/run/docker.sock
-  phpmyadmin: #80
+  phpmyadmin:
+    #80
     build: build/phpmyadmin/.
     networks:
       - wireguard
     restart: unless-stopped
     environment:
       - PMA_HOST=mariadb
-  duplicati: #8200
+  duplicati:
+    #8200
     build: build/duplicati/.
     restart: unless-stopped
     environment:
@@ -172,10 +187,12 @@ services:
       - wireguard
 
   # Generic Desktop 
-  guacd: #4822
+  guacd:
+    #4822
     build: build/guacd/.
     restart: unless-stopped
-  support-desktop-shared: #3389
+  support-desktop-shared:
+    #3389
     build: build/support-desktop-shared/.
     restart: unless-stopped
     environment:
@@ -183,7 +200,8 @@ services:
       - PGID=${USERID}
       - TZ=${TIMEZONE}
     shm_size: "1gb"
-  admin-desktop-shared: #3389
+  admin-desktop-shared:
+    #3389
     build: build/admin-desktop-shared/.
     restart: unless-stopped
     privileged: true
@@ -195,7 +213,8 @@ services:
       - PGID=${USERID}
       - TZ=${TIMEZONE}
     shm_size: "1gb"
-  technical-desktop-shared: #3389
+  technical-desktop-shared:
+    #3389
     build: build/technical-desktop-shared/.
     restart: unless-stopped
     environment:
@@ -203,8 +222,6 @@ services:
       - PGID=${USERID}
       - TZ=${TIMEZONE}
     shm_size: "1gb"
-
-
   # UserScript should create dedicated desktops and destroy dedicated desktops based on user
   # creation & deletion
 
