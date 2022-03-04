@@ -23,3 +23,9 @@
     
     - name: Run Docker install script
       ansible.builtin.script: /opt/docker.sh
+
+    - name: Get docker-compose container via linuxserver.io
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
