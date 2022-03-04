@@ -14,3 +14,10 @@ TODO: Set up multiple user functionality in shared environments
 TODO: Set up container environment for the above via ansible
 TODO: Set up Pi "configuration" in Ansible
 TODO: Potentially configure above in Terraform in cloud
+
+
+# Install pre-requisites
+```bash
+apt-get install sudo python3-pip git
+python3 -m pip install ansible
+```
