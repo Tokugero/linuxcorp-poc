@@ -1,3 +1,19 @@
+# Passwords & Secrets
 .env
+
+# Most things in data shouldn't get shipped
 data/*/
-!data/grafana-ui/provisioning/*
+
+# Need some Grafana provisioning goodness
+!data/grafana-ui
+data/grafana-ui/config
+!data/grafana-ui/provisioning
+
+# Need some swag confs
+data/swag-proxy/*
+!data/swag-proxy
+data/swag-proxy/config/*
+!data/swag-proxy/config
+data/swag-proxy/config/nginx/*
+!data/swag-proxy/config/nginx
+!data/swag-proxy/config/nginx/proxy-confs/
