@@ -2,7 +2,7 @@ services:
   # Central Authentication for Services
   ldap-db: #1389 1636
     # https://raw.githubusercontent.com/bitnami/bitnami-docker-openldap/master/docker-compose.yml
-    build: ldap-db/.
+    build: build/ldap-db/.
     volumes:
       - './data/ldap-db:/bitnami/openldap'
     environment:
@@ -12,14 +12,14 @@ services:
       - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
     restart: unless-stopped
   ldap-ui: #443
-    build: ldap-ui/.
+    build: build/ldap-ui/.
     environment:
       - PHPLDAPADMIN_LDAP_HOSTS=ldap-db
     restart: unless-stopped
 
   # Central Ingress for Web Applications
   swag-proxy: #443
-    build: swag-proxy/.
+    build: build/swag-proxy/.
     cap_add:
       - NET_ADMIN
     environment:
@@ -38,7 +38,7 @@ services:
       - 80:80
     restart: unless-stopped
   authelia-sso:
-    build: authelia-sso/.
+    build: build/authelia-sso/.
     environment:
       - TZ=${TIMEZONE}
     volumes:
@@ -47,24 +47,24 @@ services:
 
   # Infrastructure Suite
   grafana-ui: #3000
-    build: grafana-ui/.
+    build: build/grafana-ui/.
     restart: unless-stopped
     volumes:
         - grafana:/var/lib/grafana
         - ./data/grafana-ui/provisioning:/etc/grafana/provisioning
   #TODO
   ofbiz-ui: #8080 8443
-    build: ofbiz-ui/.
+    build: build/ofbiz-ui/.
     restart: unless-stopped
   osticket-ui: #80
-    build: osticket-ui/.
+    build: build/osticket-ui/.
     restart: unless-stopped
     environment:
       - MYSQL_HOST=mariadb
       - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
       - MYSQL_USER=${OSTICKET_DB_USER}
   dokuwiki-ui: #80
-    build: dokuwiki-ui/.
+    build: build/dokuwiki-ui/.
     restart: unless-stopped
     environment:
       - PUID=${USERID}
@@ -73,14 +73,14 @@ services:
     volumes:
       - ./data/dokuwiki-ui/config:/config
   guacamole: #8080
-    build: guacamole/.
+    build: build/guacamole/.
     restart: unless-stopped
     environment:
       - MYSQL_DATABASE=mariadb
       - MYSQL_USER=${GUAC_DB_USER}
       - MYSQL_PASSWORD=${GUAC_DB_PASS}
   mariadb: #3306
-    build: mariadb/.
+    build: build/mariadb/.
     restart: unless-stopped
     environment:
       - PUID=${USERID}
@@ -95,7 +95,7 @@ services:
 
   # Monitoring Services
   prometheus-db: #9090
-    build: prometheus-db/.
+    build: build/prometheus-db/.
     restart: unless-stopped
     ports:
       - "9090:9090"
@@ -103,7 +103,7 @@ services:
       - ./prometheusdb/config:/etc/prometheus/
       - prometheusdb:/prometheus
   prometheus-scraper: #9116
-    build: prometheus-scraper/.
+    build: build/prometheus-scraper/.
     restart: unless-stopped
     ports: 
       - "9116:9116"
@@ -112,7 +112,7 @@ services:
 
 # Break-the-glass access
   wireguard: #51820
-    build: wireguard/.
+    build: build/wireguard/.
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -138,7 +138,7 @@ services:
       - default
       - wireguard
   yacht-admin: #8000
-    build: yacht-admin/.
+    build: build/yacht-admin/.
     restart: unless-stopped
     environment:
       - PUID=${USERID}
@@ -151,14 +151,15 @@ services:
     volumes:
       - ./data/yacht-admin:/config
       - /var/run/docker.sock:/var/run/docker.sock
-  phpMyAdmin: #80
+  phpmyadmin: #80
+    build: build/phpmyadmin/.
     networks:
       - wireguard
     restart: unless-stopped
     environment:
       - PMA_HOST=mariadb
   duplicati: #8200
-    build: duplicati/.
+    build: build/duplicati/.
     restart: unless-stopped
     environment:
       - PUID=${USERID}
@@ -172,10 +173,10 @@ services:
 
   # Generic Desktop 
   guacd: #4822
-    build: guacd/.
+    build: build/guacd/.
     restart: unless-stopped
   support-desktop-shared: #3389
-    build: support-desktop-shared/.
+    build: build/support-desktop-shared/.
     restart: unless-stopped
     environment:
       - PUID=${USERID}
@@ -183,7 +184,7 @@ services:
       - TZ=${TIMEZONE}
     shm_size: "1gb"
   admin-desktop-shared: #3389
-    build: admin-desktop-shared/.
+    build: build/admin-desktop-shared/.
     restart: unless-stopped
     privileged: true
     networks:
@@ -195,7 +196,7 @@ services:
       - TZ=${TIMEZONE}
     shm_size: "1gb"
   technical-desktop-shared: #3389
-    build: technical-desktop-shared/.
+    build: build/technical-desktop-shared/.
     restart: unless-stopped
     environment:
       - PUID=${USERID}

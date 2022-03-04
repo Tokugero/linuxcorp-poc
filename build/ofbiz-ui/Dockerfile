@@ -10,8 +10,7 @@ RUN apk update && apk upgrade && apk add \
         wget \
         unzip && \
     wget -O ofbiz.zip https://dlcdn.apache.org/ofbiz/apache-ofbiz-${OFBIZ_VERSION}.zip && \
-    unzip ofbiz.zip
-
+    unzip ofbiz.zip -d ofbiz
 
 FROM openjdk:8-jdk-alpine
 
@@ -23,7 +22,7 @@ RUN apk update && \
         subversion \
         mysql-client
 
-COPY --from=build ofbiz /usr/local/apache-ofbiz
+COPY --from=build ofbiz/ /usr/local/apache-ofbiz/
 
 WORKDIR /root/
 
