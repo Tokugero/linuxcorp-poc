@@ -32,7 +32,7 @@ services:
       - TZ=${TIMEZONE}
       - URL=${SWAG_URL}
       - VALIDATION=http
-      - SUBDOMAINS=grafana,ofbiz,osticket,wiki,desktop,duplicati
+      - SUBDOMAINS=grafana,ofbiz,osticket,wiki,desktop,duplicati,phpmyadmin,yacht,ldap
       - EMAIL=${LE_EMAIL}
       - STAGING=${LE_TESTING}
     volumes:
@@ -163,6 +163,11 @@ services:
       - 51820:51820/udp
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
+    links:
+      - "swag-proxy:ldap.tokugero.ddns.net"
+      - "swag-proxy:yacht.tokugero.ddns.net"
+      - "swag-proxy:phpmyadmin.tokugero.ddns.net"
+      - "swag-proxy:duplicati.tokugero.ddns.net"
   yacht-admin:
     #8000
     build: build/yacht-admin/.
@@ -218,6 +223,11 @@ services:
       - PGID=${USERID}
       - TZ=${TIMEZONE}
     shm_size: "1gb"
+    links:
+      - "swag-proxy:ldap.tokugero.ddns.net"
+      - "swag-proxy:yacht.tokugero.ddns.net"
+      - "swag-proxy:phpmyadmin.tokugero.ddns.net"
+      - "swag-proxy:duplicati.tokugero.ddns.net"
   technical-desktop-shared:
     #3389
     build: build/technical-desktop-shared/.
@@ -227,6 +237,11 @@ services:
       - PGID=${USERID}
       - TZ=${TIMEZONE}
     shm_size: "1gb"
+    links:
+      - "swag-proxy:ldap.tokugero.ddns.net"
+      - "swag-proxy:yacht.tokugero.ddns.net"
+      - "swag-proxy:phpmyadmin.tokugero.ddns.net"
+      - "swag-proxy:duplicati.tokugero.ddns.net"
   # UserScript should create dedicated desktops and destroy dedicated desktops based on user
   # creation & deletion
 
