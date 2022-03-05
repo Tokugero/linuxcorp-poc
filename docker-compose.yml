@@ -8,7 +8,7 @@ services:
       args:
         - USERID=${USERID}
     volumes:
-      - './data/ldap-db:/bitnami/openldap'
+      - 'ldap-db:/bitnami/openldap'
     environment:
       - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
@@ -253,6 +253,7 @@ volumes:
   backup:
   prometheusdb:
   grafana:
+  ldap-db:
 
 networks:
   default:
