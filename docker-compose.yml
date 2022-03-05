@@ -14,6 +14,7 @@ services:
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
       - LDAP_USERS=${LDAP_SERVICE_BIND_USER}
       - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
+      - BITNAMI_DEBUG=1
     restart: unless-stopped
   ldap-ui:
     #443

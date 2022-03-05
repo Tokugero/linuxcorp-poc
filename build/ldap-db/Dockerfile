@@ -2,4 +2,4 @@
 ARG USERID=1000
 FROM bitnami/openldap
 
-USER $USERID:$USERID
+USER $USERID:0
