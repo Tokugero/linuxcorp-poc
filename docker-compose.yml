@@ -1,3 +1,9 @@
+x-links: &links
+  - "swag-proxy:ldap.${SWAG_URL}"
+  - "swag-proxy:yacht.${SWAG_URL}"
+  - "swag-proxy:phpmyadmin.${SWAG_URL}"
+  - "swag-proxy:duplicati.${SWAG_URL}"
+  
 services:
   # Central Authentication for Services
   ldap-db:
@@ -12,7 +18,7 @@ services:
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
       - LDAP_USERS=${LDAP_SERVICE_BIND_USER}
       - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
-      - BITNAMI_DEBUG=1
+      - LDAP_ROOT=${LDAP_ROOT}
     restart: unless-stopped
   ldap-ui:
     #443
@@ -179,11 +185,8 @@ services:
       - 51820:51820/udp
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
-    links:
-      - "swag-proxy:ldap.tokugero.ddns.net"
-      - "swag-proxy:yacht.tokugero.ddns.net"
-      - "swag-proxy:phpmyadmin.tokugero.ddns.net"
-      - "swag-proxy:duplicati.tokugero.ddns.net"
+    links: *links
+
   yacht-admin:
     #8000
     container_name: yacht-admin
@@ -245,11 +248,7 @@ services:
       - PGID=${USERID}
       - TZ=${TIMEZONE}
     shm_size: "1gb"
-    links:
-      - "swag-proxy:ldap.tokugero.ddns.net"
-      - "swag-proxy:yacht.tokugero.ddns.net"
-      - "swag-proxy:phpmyadmin.tokugero.ddns.net"
-      - "swag-proxy:duplicati.tokugero.ddns.net"
+    links: *links
   technical-desktop-shared:
     #3389
     container_name: technical-desktop-shared
@@ -260,11 +259,8 @@ services:
       - PGID=${USERID}
       - TZ=${TIMEZONE}
     shm_size: "1gb"
-    links:
-      - "swag-proxy:ldap.tokugero.ddns.net"
-      - "swag-proxy:yacht.tokugero.ddns.net"
-      - "swag-proxy:phpmyadmin.tokugero.ddns.net"
-      - "swag-proxy:duplicati.tokugero.ddns.net"
+    links: *links
+
   # UserScript should create dedicated desktops and destroy dedicated desktops based on user
   # creation & deletion
 
