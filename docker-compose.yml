@@ -19,6 +19,7 @@ services:
       - LDAP_USERS=${LDAP_SERVICE_BIND_USER}
       - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
       - LDAP_ROOT=${LDAP_ROOT}
+      - LDAP_PORT=389
     restart: unless-stopped
   ldap-ui:
     #443
