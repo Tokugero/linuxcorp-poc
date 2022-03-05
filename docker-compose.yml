@@ -5,7 +5,7 @@ services:
     # https://raw.githubusercontent.com/bitnami/bitnami-docker-openldap/master/docker-compose.yml
     build: build/ldap-db/.
     volumes:
-      - './data/ldap-db:/bitnami/openldap'
+      - './data/ldap-db:/bitnami/openldap/data'
     environment:
       - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
