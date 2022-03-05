@@ -19,14 +19,13 @@ services:
       - LDAP_USERS=${LDAP_SERVICE_BIND_USER}
       - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
       - LDAP_ROOT=${LDAP_ROOT}
-      - LDAP_PORT=389
     restart: unless-stopped
   ldap-ui:
     #443
     container_name: ldap-ui
     build: build/ldap-ui/.
     environment:
-      - PHPLDAPADMIN_LDAP_HOSTS=ldap-db
+      - PHPLDAPADMIN_LDAP_HOSTS=LDAP://ldap-db:1389/
       - PHPLDAPADMIN_HTTPS=false
       - PHPLDAPADMIN_TRUST_PROXY_SSL=true
     restart: unless-stopped
