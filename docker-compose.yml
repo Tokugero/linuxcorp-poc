@@ -3,6 +3,7 @@ services:
   ldap-db:
     #1389 1636
     # https://raw.githubusercontent.com/bitnami/bitnami-docker-openldap/master/docker-compose.yml
+    container_name: ldap-db
     build: build/ldap-db/.
     volumes:
       - 'ldap-db:/bitnami/openldap'
@@ -15,6 +16,7 @@ services:
     restart: unless-stopped
   ldap-ui:
     #443
+    container_name: ldap-ui
     build: build/ldap-ui/.
     environment:
       - PHPLDAPADMIN_LDAP_HOSTS=ldap-db
@@ -23,6 +25,7 @@ services:
   # Central Ingress for Web Applications
   swag-proxy:
     #443
+    container_name: swag-proxy
     build: build/swag-proxy/.
     cap_add:
       - NET_ADMIN
@@ -42,6 +45,7 @@ services:
       - 80:80
     restart: unless-stopped
   authelia-sso:
+    container_name: authelia-sso
     build: build/authelia-sso/.
     environment:
       - TZ=${TIMEZONE}
@@ -52,6 +56,7 @@ services:
   # Infrastructure Suite
   grafana-ui:
     #3000
+    container_name: grafana-ui
     build: build/grafana-ui/.
     restart: unless-stopped
     volumes:
@@ -60,10 +65,12 @@ services:
   #TODO
   ofbiz-ui:
     #8080 8443
+    container_name: ofbiz-ui
     build: build/ofbiz-ui/.
     restart: unless-stopped
   osticket-ui:
     #80
+    container_name: osticket-ui
     build: build/osticket-ui/.
     restart: unless-stopped
     environment:
@@ -72,6 +79,7 @@ services:
       - MYSQL_USER=${OSTICKET_DB_USER}
   osticket-mariadb:
     #3306
+    container_name: osticket-mariadb
     build: build/osticket-mariadb/.
     restart: unless-stopped
     environment:
@@ -86,6 +94,7 @@ services:
       - ./data/osticket-mariadb/config:/config
   dokuwiki-ui:
     #80
+    container_name: dokuwiki-ui
     build: build/dokuwiki-ui/.
     restart: unless-stopped
     environment:
@@ -96,6 +105,7 @@ services:
       - ./data/dokuwiki-ui/config:/config
   guacamole:
     #8080
+    container_name: guacamole
     build: build/guacamole/.
     restart: unless-stopped
     environment:
@@ -106,6 +116,7 @@ services:
       - GUACD_HOSTNAME=guacd
   guacamole-mariadb:
     #3306
+    container_name: guacamole-mariadb
     build: build/guacamole-mariadb/.
     restart: unless-stopped
     environment:
@@ -122,6 +133,7 @@ services:
   # Monitoring Services
   prometheus-db:
     #9090
+    container_name: prometheus-db
     build: build/prometheus-db/.
     restart: unless-stopped
     ports:
@@ -131,6 +143,7 @@ services:
       - prometheusdb:/prometheus
   prometheus-scraper:
     #9116
+    container_name: prometheus-scraper
     build: build/prometheus-scraper/.
     restart: unless-stopped
     ports:
@@ -141,6 +154,7 @@ services:
   # Break-the-glass access
   wireguard:
     #51820
+    container_name: wireguard
     build: build/wireguard/.
     restart: unless-stopped
     cap_add:
@@ -170,6 +184,7 @@ services:
       - "swag-proxy:duplicati.tokugero.ddns.net"
   yacht-admin:
     #8000
+    container_name: yacht-admin
     build: build/yacht-admin/.
     restart: unless-stopped
     environment:
@@ -183,12 +198,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   phpmyadmin:
     #80
+    container_name: phpmyadmin
     build: build/phpmyadmin/.
     restart: unless-stopped
     environment:
       - PMA_HOSTS=osticket-mariadb,guacamole-mariadb
   duplicati:
     #8200
+    container_name: duplicati
     build: build/duplicati/.
     restart: unless-stopped
     environment:
@@ -202,10 +219,12 @@ services:
   # Generic Desktop 
   guacd:
     #4822
+    container_name: guacd
     build: build/guacd/.
     restart: unless-stopped
   support-desktop-shared:
     #3389
+    container_name: support-desktop-shared
     build: build/support-desktop-shared/.
     restart: unless-stopped
     environment:
@@ -215,6 +234,7 @@ services:
     shm_size: "1gb"
   admin-desktop-shared:
     #3389
+    container_name: admin-desktop-shared
     build: build/admin-desktop-shared/.
     restart: unless-stopped
     privileged: true
@@ -230,6 +250,7 @@ services:
       - "swag-proxy:duplicati.tokugero.ddns.net"
   technical-desktop-shared:
     #3389
+    container_name: technical-desktop-shared
     build: build/technical-desktop-shared/.
     restart: unless-stopped
     environment:
