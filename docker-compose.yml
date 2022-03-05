@@ -81,6 +81,7 @@ services:
       - MYSQL_DATABASE=osticket
       - MYSQL_USER=${OSTICKET_DB_USER}
       - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${OSTICKET_DB_ROOT_PASS}
     volumes:
       - ./data/osticket-mariadb/config:/config
     networks:
@@ -117,6 +118,7 @@ services:
       - MYSQL_DATABASE=guacamole
       - MYSQL_USER=${GUAC_DB_USER}
       - MYSQL_PASSWORD=${GUAC_DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${GUAC_DB_ROOT_PASS}
     volumes:
       - ./data/guacamole-mariadb/config:/config
     networks:
@@ -251,6 +253,7 @@ volumes:
   prometheusdb:
   grafana:
   ldap-db:
+    driver: local
 
 networks:
   default:
