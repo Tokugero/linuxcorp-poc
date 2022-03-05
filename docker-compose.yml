@@ -20,6 +20,7 @@ services:
     build: build/ldap-ui/.
     environment:
       - PHPLDAPADMIN_LDAP_HOSTS=ldap-db
+      - PHPLDAPADMIN_TRUST_PROXY_SSL=true
     restart: unless-stopped
 
   # Central Ingress for Web Applications
