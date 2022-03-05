@@ -3,8 +3,10 @@ services:
   ldap-db:
     #1389 1636
     # https://raw.githubusercontent.com/bitnami/bitnami-docker-openldap/master/docker-compose.yml
-    build: build/ldap-db/.
-    user: "${USERID}:${USERID}"
+    build: 
+      context: build/ldap-db/.
+      args:
+        - USERID=${USERID}
     volumes:
       - './data/ldap-db:/bitnami/openldap/data'
     environment:
