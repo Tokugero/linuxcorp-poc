@@ -84,9 +84,6 @@ services:
       - MYSQL_ROOT_PASSWORD=${OSTICKET_DB_ROOT_PASS}
     volumes:
       - ./data/osticket-mariadb/config:/config
-    networks:
-      - default
-      - wireguard
   dokuwiki-ui:
     #80
     build: build/dokuwiki-ui/.
@@ -121,9 +118,6 @@ services:
       - MYSQL_ROOT_PASSWORD=${GUAC_DB_ROOT_PASS}
     volumes:
       - ./data/guacamole-mariadb/config:/config
-    networks:
-      - default
-      - wireguard
 
   # Monitoring Services
   prometheus-db:
@@ -169,9 +163,6 @@ services:
       - 51820:51820/udp
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
-    networks:
-      - default
-      - wireguard
   yacht-admin:
     #8000
     build: build/yacht-admin/.
@@ -182,16 +173,12 @@ services:
       - SECRET_KEY=${YACHT_SECRET_KEY}
       - ADMIN_EMAIL=${YACHT_ADMIN_EMAIL}
       - DISABLE_AUTH=true
-    networks:
-      - wireguard
     volumes:
       - ./data/yacht-admin:/config
       - /var/run/docker.sock:/var/run/docker.sock
   phpmyadmin:
     #80
     build: build/phpmyadmin/.
-    networks:
-      - wireguard
     restart: unless-stopped
     environment:
       - PMA_HOSTS=osticket-mariadb,guacamole-mariadb
@@ -206,8 +193,6 @@ services:
     volumes:
       - ./data/duplicati/config:/config
       - backup:/backups
-    networks:
-      - wireguard
 
   # Generic Desktop 
   guacd:
@@ -228,9 +213,6 @@ services:
     build: build/admin-desktop-shared/.
     restart: unless-stopped
     privileged: true
-    networks:
-      - default
-      - wireguard
     environment:
       - PUID=${USERID}
       - PGID=${USERID}
