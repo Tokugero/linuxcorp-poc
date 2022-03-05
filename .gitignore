@@ -25,3 +25,11 @@ data/guacamole-mariadb/config/*
 !data/guacamole-mariadb/config
 data/guacamole-mariadb/config/initdb.d
 !data/guacamole-mariadb/config/initdb.d/
+
+# Prometheus init
+data/prometheus-db/*
+!data/prometheus-db
+data/prometheus-db/config/*
+!data/prometheus-db/config
+data/prometheus-db/config/*
+!data/prometheus-db/config/prometheus.yml
