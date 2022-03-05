@@ -130,7 +130,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheusdb/config:/etc/prometheus/
+      - ./data/prometheusdb/config:/etc/prometheus/
       - prometheusdb:/prometheus
   prometheus-scraper:
     #9116
@@ -139,7 +139,7 @@ services:
     ports:
       - "9116:9116"
     volumes:
-      - ./prometheus-proxy/config:/opt/config/snmp_exporter
+      - ./data/prometheus-proxy/config:/opt/config/snmp_exporter
 
   # Break-the-glass access
   wireguard:
