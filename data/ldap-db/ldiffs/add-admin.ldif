@@ -1,0 +1,8 @@
+dn: olcDatabase={1}monitor,cn=config
+changetype: modify
+add: olcAccess
+
+olcAccess: to *
+  by self write
+  by group/groupNames/member="cn=administrator,ou=groups,dc=tokugero,dc=ddns,dc=net" write
+  by group/groupNames/member="cn=technical,ou=groups,dc=tokugero,dc=ddns,dc=net" read

@@ -33,3 +33,11 @@ data/prometheus-db/config/*
 !data/prometheus-db/config
 data/prometheus-db/config/*
 !data/prometheus-db/config/prometheus.yml
+
+# ldap-db init
+data/ldap-db/*
+!data/ldap-db
+data/ldap-db/ldiffs/*
+!data/ldap-db/ldiffs
+data/ldap-db/ldiffs/*
+!data/ldap-db/ldiffs/*.ldif

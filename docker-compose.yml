@@ -13,12 +13,12 @@ services:
     build: build/ldap-db/.
     volumes:
       - 'ldap-db:/bitnami/openldap'
+      - './data/ldap-db/ldiffs:/ldiffs'
     environment:
       - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
-      - LDAP_USERS=${LDAP_SERVICE_BIND_USER}
-      - LDAP_PASSWORDS=${LDAP_SERVICE_BIND_PASS}
-      - LDAP_ROOT=${LDAP_ROOT}
+      - LDAP_SKIP_DEFAULT_TREE=yes
+      - LDAP_CUSTOM_LDIF_DIR=/ldiffs
     restart: unless-stopped
   ldap-ui:
     #443
@@ -70,21 +70,21 @@ services:
     volumes:
       - grafana:/var/lib/grafana
       - ./data/grafana-ui/provisioning:/etc/grafana/provisioning
-  #TODO
-  ofbiz-ui:
-    #8080 8443
-    container_name: ofbiz-ui
-    build: build/ofbiz-ui/.
-    restart: unless-stopped
-  osticket-ui:
-    #80
-    container_name: osticket-ui
-    build: build/osticket-ui/.
-    restart: unless-stopped
-    environment:
-      - MYSQL_HOST=mariadb
-      - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
-      - MYSQL_USER=${OSTICKET_DB_USER}
+#  #TODO
+#  ofbiz-ui:
+#    #8080 8443
+#    container_name: ofbiz-ui
+#    build: build/ofbiz-ui/.
+#    restart: unless-stopped
+#  osticket-ui:
+#    #80
+#    container_name: osticket-ui
+#    build: build/osticket-ui/.
+#    restart: unless-stopped
+#    environment:
+#      - MYSQL_HOST=mariadb
+#      - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
+#      - MYSQL_USER=${OSTICKET_DB_USER}
   osticket-mariadb:
     #3306
     container_name: osticket-mariadb
@@ -139,25 +139,25 @@ services:
       - ./data/guacamole-mariadb/config:/config
 
   # Monitoring Services
-  prometheus-db:
-    #9090
-    container_name: prometheus-db
-    build: build/prometheus-db/.
-    restart: unless-stopped
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./data/prometheusdb/config:/etc/prometheus/
-      - prometheusdb:/prometheus
-  prometheus-scraper:
-    #9116
-    container_name: prometheus-scraper
-    build: build/prometheus-scraper/.
-    restart: unless-stopped
-    ports:
-      - "9116:9116"
-    volumes:
-      - ./data/prometheus-proxy/config:/opt/config/snmp_exporter
+#  prometheus-db:
+#    #9090
+#    container_name: prometheus-db
+#    build: build/prometheus-db/.
+#    restart: unless-stopped
+#    ports:
+#      - "9090:9090"
+#    volumes:
+#      - ./data/prometheusdb/config:/etc/prometheus/
+#      - prometheusdb:/prometheus
+#  prometheus-scraper:
+#    #9116
+#    container_name: prometheus-scraper
+#    build: build/prometheus-scraper/.
+#    restart: unless-stopped
+#    ports:
+#      - "9116:9116"
+#    volumes:
+#      - ./data/prometheus-proxy/config:/opt/config/snmp_exporter
 
   # Break-the-glass access
   wireguard:
