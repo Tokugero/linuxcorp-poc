@@ -11,8 +11,8 @@ version: 1
 
 # Entry 1:  dc=hgvsupport,dc=ddns,dc=net
 dn:  dc=hgvsupport,dc=ddns,dc=net
-dc: tokugero
-o: example
+dc: hgvsupport
+o: hgvsupport
 objectclass: dcObject
 objectclass: organization
 
