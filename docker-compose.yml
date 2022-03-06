@@ -14,11 +14,13 @@ services:
     volumes:
       - 'ldap-db:/bitnami/openldap'
       - './data/ldap-db/ldifs:/ldifs'
+      - './data/ldap-db/schema:/schema'
     environment:
       - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
       - LDAP_ROOT=${LDAP_ROOT}
       - LDAP_CUSTOM_LDIF_DIR=/ldifs
+      - LDAP_CUSTOM_SCHEMA_FILE=/schema/custom.ldif
       - BITNAMI_DEBUG=true
     restart: unless-stopped
   ldap-ui:
@@ -248,6 +250,8 @@ services:
     build: build/admin-desktop-shared/.
     restart: unless-stopped
     privileged: true
+    ports:
+      - "3389:3389"
     environment:
       - PUID=${USERID}
       - PGID=${USERID}
