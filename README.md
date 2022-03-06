@@ -15,7 +15,6 @@ TODO: Set up container environment for the above via ansible
 TODO: Configure and backup ldap for basic user management
 TODO: Set up Authelia in swag with ldap backing
 TODO: Configure management for spawning environments per user in ldap
-TODO: ansible mutate script for ldap ldifs
 
 # Install pre-requisites
 ```bash
