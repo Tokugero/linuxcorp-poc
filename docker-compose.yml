@@ -18,7 +18,6 @@ services:
       - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
       - LDAP_ROOT=${LDAP_ROOT}
-      - LDAP_SKIP_DEFAULT_TREE=yes
       - LDAP_CUSTOM_LDIF_DIR=/ldifs
       - BITNAMI_DEBUG=true
     restart: unless-stopped
