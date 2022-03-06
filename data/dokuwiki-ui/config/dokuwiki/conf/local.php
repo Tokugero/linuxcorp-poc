@@ -22,3 +22,4 @@ $conf['plugin']['authldap']['userfilter']  = '(&(uid=%{user})(objectClass=posixA
 $conf['plugin']['authldap']['groupfilter'] = '(&(objectClass=posixGroup)(memberUID=%{user}))';
 $conf['plugin']['authldap']['attributes']  = array('cn', 'displayname', 'mail', 'givenname', 'objectclass', 'sn', 'uid', 'memberof');
 $conf['plugin']['authldap']['version'] = 3;
+$conf['savedir'] = '/app/dokuwiki/data';
