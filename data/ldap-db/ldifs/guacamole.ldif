@@ -1,4 +1,4 @@
-dn: cn=Example Config,dc=hgvsupport,dc=ddns,dc=net
+dn: cn=Example Config,ou=guacamole,ou=services,dc=hgvsupport,dc=ddns,dc=net
 objectClass: guacConfigGroup
 objectClass: groupOfNames
 cn: Example Config
@@ -8,4 +8,6 @@ guacConfigParameter: port=5900
 guacConfigParameter: password=secret
 member: cn=user1,dc=example,dc=com
 member: cn=user2,dc=example,dc=com
+member: cn=administrator,ou=roles,dc=hgvsupport,dc=ddns,dc=net
+member: cn=Philip Almueti,ou=users,dc=hgvsupport,dc=ddns,dc=net
 seeAlso: cn=admins,ou=groups,dc=example,dc=com
