@@ -14,14 +14,12 @@ services:
     volumes:
       - 'ldap-db:/bitnami/openldap'
       - './data/ldap-db/ldifs:/ldifs'
-      #- './data/ldap-db/schema:/schema'
     environment:
       - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
-      #- LDAP_ROOT=${LDAP_ROOT}
+      - LDAP_ROOT=${LDAP_ROOT}
       - LDAP_SKIP_DEFAULT_TREE=yes
       - LDAP_CUSTOM_LDIF_DIR=/ldifs
-      #- LDAP_CUSTOM_SCHEMA_FILE=/schema
       - BITNAMI_DEBUG=true
     restart: unless-stopped
   ldap-ui:
