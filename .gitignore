@@ -37,10 +37,10 @@ data/prometheus-db/config/*
 # ldap-db init
 data/ldap-db/*
 !data/ldap-db
-data/ldap-db/ldiffs/*
-!data/ldap-db/ldiffs
+data/ldap-db/ldifs/*
+!data/ldap-db/ldifs
 !data/ldap-db/schema
-data/ldap-db/ldiffs/*
+data/ldap-db/ldifs/*
 data/ldap-db/schema/*
-!data/ldap-db/ldiffs/*.ldif
+!data/ldap-db/ldifs/*.ldif
 !data/ldap-db/schema/*.ldif

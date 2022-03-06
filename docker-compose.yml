@@ -13,14 +13,15 @@ services:
     build: build/ldap-db/.
     volumes:
       - 'ldap-db:/bitnami/openldap'
-      - './data/ldap-db/ldiffs:/ldiffs'
-      - './data/ldap-db/schema:/schema'
+      - './data/ldap-db/ldifs:/ldifs'
+      #- './data/ldap-db/schema:/schema'
     environment:
       - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
       - LDAP_SKIP_DEFAULT_TREE=yes
-      - LDAP_CUSTOM_LDIF_DIR=/ldiffs
-      - LDAP_CUSTOM_SCHEMA_FILE=/schema
+      - LDAP_CUSTOM_LDIF_DIR=/ldifs
+      #- LDAP_CUSTOM_SCHEMA_FILE=/schema
+      - BITNAMI_DEBUG=true
     restart: unless-stopped
   ldap-ui:
     #443
