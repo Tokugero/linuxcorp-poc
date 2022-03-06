@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is an example of how a local.php could look like.
  * Simply copy the options you want to change from dokuwiki.php
@@ -20,4 +21,4 @@ $conf['plugin']['authldap']['grouptree']   = 'ou=roles, dc=hgvsupport, dc=ddns, 
 $conf['plugin']['authldap']['userfilter']  = '(&(uid=%{user})(objectClass=posixAccount))';
 $conf['plugin']['authldap']['groupfilter'] = '(&(objectClass=posixGroup)(memberUID=%{user}))';
 $conf['plugin']['authldap']['attributes']  = array('cn', 'displayname', 'mail', 'givenname', 'objectclass', 'sn', 'uid', 'memberof');
- 
+$conf['plugin']['authldap']['version'] = 3;
