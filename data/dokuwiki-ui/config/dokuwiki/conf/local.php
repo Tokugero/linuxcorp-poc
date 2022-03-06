@@ -13,7 +13,7 @@
 $conf['title']       = 'HGV Support';        //what to show in the title
 
 $conf['useacl']      = 1;                //Use Access Control Lists to restrict access?
-//$conf['superuser']   = 'joe';
+$conf['superuser']   = '@administrator';
 $conf['authtype'] = 'authldap';
 $conf['plugin']['authldap']['server']      = 'ldap://ldap-db:1389'; #instead of the above two settings
 $conf['plugin']['authldap']['usertree']    = 'ou=users, dc=hgvsupport, dc=ddns, dc=net';
