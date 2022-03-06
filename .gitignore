@@ -56,3 +56,4 @@ data/dokuwiki-ui/config/dokuwiki/*
 !data/dokuwiki-ui/config/dokuwiki/conf
 data/dokuwiki-ui/config/dokuwiki/conf/*
 !data/dokuwiki-ui/config/dokuwiki/conf/local.php
+!data/dokuwiki-ui/config/dokuwiki/conf/acl.auth.php
