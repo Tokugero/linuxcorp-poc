@@ -39,5 +39,8 @@ data/ldap-db/*
 !data/ldap-db
 data/ldap-db/ldiffs/*
 !data/ldap-db/ldiffs
+!data/ldap-db/schema
 data/ldap-db/ldiffs/*
+data/ldap-db/schema/*
 !data/ldap-db/ldiffs/*.ldif
+!data/ldap-db/schema/*.ldif

@@ -1,0 +1,15 @@
+dn: olcDatabase={1}monitor
+objectClass: olcDatabaseConfig
+olcDatabase: {1}monitor
+structuralObjectClass: olcDatabaseConfig
+entryUUID: af31b040-31c0-103c-9cb0-7db65741642e
+creatorsName: cn=config
+createTimestamp: 20220306174332Z
+olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" read by dn.base="cn=admin,dc=tokugero,dc=.ddns,dc=net" read by * none
+olcAccess: to *
+  by self write
+  by group/groupNames/member="cn=administrator,ou=groups,dc=tokugero,dc=ddns,dc=net" write
+  by group/groupNames/member="cn=technical,ou=groups,dc=tokugero,dc=ddns,dc=net" read
+entryCSN: 20220306174332.067702Z#000000#000#000000
+modifiersName: gidNumber=0+uidNumber=1001,cn=peercred,cn=external,cn=auth
+modifyTimestamp: 20220306174332Z
