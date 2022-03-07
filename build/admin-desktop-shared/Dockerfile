@@ -10,3 +10,6 @@ RUN password=$LDAP_PASSWORD && \
     ldap_ip=$LDAP_HOST && \
     apt-get update -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y libnss-ldap nscd nfs-common 
+
+COPY ldap.conf /etc/ldap.conf
+COPY access.conf /etc/security/access.conf
