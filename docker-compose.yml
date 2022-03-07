@@ -136,6 +136,7 @@ services:
       - LDAP_MEMBER_ATTRIBUTE=member
       - LDAP_MEMBER_ATTRIBUTE_TYPE=dn
       - LDAP_GROUP_BASE_DN=ou=roles,${LDAP_ROOT}
+      - LDAP_FOLLOW_REFERALS=true
   guacamole-mariadb:
     #3306
     container_name: guacamole-mariadb
