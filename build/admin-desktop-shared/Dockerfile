@@ -13,3 +13,4 @@ RUN password=$LDAP_PASSWORD && \
 
 COPY ldap.conf /etc/ldap.conf
 COPY access.conf /etc/security/access.conf
+COPY common-auth /etc/pam.d/common-auth
