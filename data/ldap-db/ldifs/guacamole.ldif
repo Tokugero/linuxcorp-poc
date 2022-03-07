@@ -24,7 +24,7 @@ seeAlso: cn=administrator,ou=roles,dc=hgvsupport,dc=ddns,dc=net
 dn: cn=support-shared-desktop,ou=guacamole,ou=services,dc=hgvsupport,dc=ddns,dc=net
 objectClass: guacConfigGroup
 objectClass: groupOfNames
-cn: admin-shared-desktop
+cn: support-shared-desktop
 guacConfigProtocol: rdp
 guacConfigParameter: hostname=support-desktop-shared
 guacConfigParameter: port=3389
@@ -35,7 +35,7 @@ seeAlso: cn=support,ou=roles,dc=hgvsupport,dc=ddns,dc=net
 dn: cn=technical-shared-desktop,ou=guacamole,ou=services,dc=hgvsupport,dc=ddns,dc=net
 objectClass: guacConfigGroup
 objectClass: groupOfNames
-cn: admin-shared-desktop
+cn: technical-shared-desktop
 guacConfigProtocol: rdp
 guacConfigParameter: hostname=technical-desktop-shared
 guacConfigParameter: port=3389
