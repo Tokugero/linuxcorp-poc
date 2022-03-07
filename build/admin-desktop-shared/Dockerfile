@@ -8,6 +8,8 @@ FROM lscr.io/linuxserver/rdesktop:mate-focal
 RUN password=$LDAP_PASSWORD && \
     dn=$LDAP_ROOT && \
     ldap_ip=$LDAP_HOST && \
+    apt-get update -y && \
+    apt-get install ldap-auth-config && \
     cat << EOF | sudo debconf-set-selections && \
     ldap-auth-config ldap-auth-config/dbrootlogin boolean false && \
     ldap-auth-config ldap-auth-config/pam_password select md5 && \
