@@ -252,7 +252,12 @@ services:
   admin-desktop-shared:
     #3389
     container_name: admin-desktop-shared
-    build: build/admin-desktop-shared/.
+    build: 
+      context: build/admin-desktop-shared/.
+      args:
+        - LDAP_PASSWORD=${LDAP_ADMIN_PASSWORD}
+        - LDAP_ROOT=${LDAP_ROOT}
+        - LDAP_HOST=ldap-db
     restart: unless-stopped
     privileged: true
     ports:
