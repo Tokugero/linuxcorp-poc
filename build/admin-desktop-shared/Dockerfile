@@ -23,5 +23,4 @@ RUN password=$LDAP_PASSWORD && \
     apt-get install -y libnss-ldap nscd nfs-common && \
     auth-client-config -t nss -p lac_ldap && \
     pam-auth-update && \
-    sed -e's,use_authtok,,g' -i /etc/pam.d/common-password && \
-    /etc/init.d/nscd restart 
+    sed -e's,use_authtok,,g' -i /etc/pam.d/common-password
