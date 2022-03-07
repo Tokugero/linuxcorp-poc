@@ -128,7 +128,13 @@ services:
       - LDAP_HOSTNAME=ldap-db
       - LDAP_PORT=1389
       - LDAP_ENCRYPTION_METHOD=none
-      - LDAP_USER_BASE_DN="ou=users,${LDAP_ROOT}"
+      - LDAP_USER_BASE_DN=ou=users,${LDAP_ROOT}
+      - LDAP_CONFIG_BASE_DN=ou=guacamole,ou=services,${LDAP_ROOT}
+      - LDAP_SEARCH_BIND_DN=cn=${LDAP_ADMIN_USERNAME},${LDAP_ROOT}
+      - LDAP_SEARCH_BIND_PASSWORD=${LDAP_ADMIN_PASSWORD}
+      - LDAP_USERNAME_ATTRIBUTE=uid
+      - LDAP_MEMBER_ATTRIBUTE=member
+      - LDAP_MEMBER_ATTRIBUTE_TYPE=dn
   guacamole-mariadb:
     #3306
     container_name: guacamole-mariadb
