@@ -1,0 +1,25 @@
+# A scrape configuration scraping a Node Exporter and the Prometheus server
+# itself.
+# https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+
+scrape_configs:
+  # Scrape Prometheus itself every 10 seconds.
+  - job_name: 'prometheus'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'snmp'
+    static_configs:
+      - targets: # These are the FULL list of nodes in our compose. This has to include every host we want to pull from our prom-proxy.
+        - test
+    metrics_path: /snmp
+    params:
+      module: [custom]
+    relabel_configs:
+      # This is transformation for rewriting the snmp collection log properly. If we don't do this, we'll try to call endpoints that don't exist (http://node1:80)
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: prometheus-proxy:9116  # The SNMP exporter's real hostname:port.

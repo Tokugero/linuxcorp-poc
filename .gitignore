@@ -1,0 +1,59 @@
+# Passwords & Secrets
+.env
+
+# Most things in data shouldn't get shipped
+data/*/
+
+# Need some Grafana provisioning goodness
+!data/grafana-ui
+data/grafana-ui/config
+!data/grafana-ui/provisioning
+
+# Need some swag confs
+data/swag-proxy/*
+!data/swag-proxy
+data/swag-proxy/config/*
+!data/swag-proxy/config
+data/swag-proxy/config/nginx/*
+!data/swag-proxy/config/nginx
+!data/swag-proxy/config/nginx/proxy-confs/
+
+# Guacamole init
+data/guacamole-mariadb/*
+!data/guacamole-mariadb
+data/guacamole-mariadb/config/*
+!data/guacamole-mariadb/config
+data/guacamole-mariadb/config/initdb.d
+!data/guacamole-mariadb/config/initdb.d/
+
+# Prometheus init
+data/prometheus-db/*
+!data/prometheus-db
+data/prometheus-db/config/*
+!data/prometheus-db/config
+data/prometheus-db/config/*
+!data/prometheus-db/config/prometheus.yml
+
+# ldap-db init
+data/ldap-db/*
+!data/ldap-db
+data/ldap-db/ldifs/*
+!data/ldap-db/ldifs
+!data/ldap-db/schema
+data/ldap-db/ldifs/*
+data/ldap-db/schema/*
+!data/ldap-db/ldifs/*.ldif
+!data/ldap-db/schema/*.ldif
+
+# dokuwiki init
+data/dokuwiki-ui/*
+!data/dokuwiki-ui
+data/dokuwiki-ui/config/*
+!data/dokuwiki-ui/config
+data/dokuwiki-ui/config/*
+!data/dokuwiki-ui/config/dokuwiki
+data/dokuwiki-ui/config/dokuwiki/*
+!data/dokuwiki-ui/config/dokuwiki/conf
+data/dokuwiki-ui/config/dokuwiki/conf/*
+!data/dokuwiki-ui/config/dokuwiki/conf/local.php
+!data/dokuwiki-ui/config/dokuwiki/conf/acl.auth.php

@@ -1,0 +1,31 @@
+---
+- name: Initial prep work
+  hosts: localhost
+  tasks:
+    - name: Install pre-requisite apt-packages
+      ansible.builtin.apt:
+        state: latest
+        update_cache: yes
+        pkg:
+          - wget
+
+    - name: Install quality of life packages
+      ansible.builtin.apt:
+        state: latest
+        pkg:
+          - screen
+          - vim
+
+    - name: Get Docker install script via get.docker.com
+      ansible.builtin.get_url:
+        url: https://get.docker.com/
+        dest: /opt/docker.sh
+    
+    - name: Run Docker install script
+      ansible.builtin.script: /opt/docker.sh
+
+    - name: Get docker-compose container via linuxserver.io
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'

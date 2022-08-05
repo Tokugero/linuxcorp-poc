@@ -1,0 +1,44 @@
+version: 1
+
+dn: ou=services,dc=hgvsupport,dc=ddns,dc=net
+objectclass: organizationalUnit
+objectclass: top
+ou: services
+
+dn: ou=guacamole,ou=services,dc=hgvsupport,dc=ddns,dc=net
+objectclass: organizationalUnit
+objectclass: top
+ou: guacamole
+
+dn: cn=admin-shared-desktop,ou=guacamole,ou=services,dc=hgvsupport,dc=ddns,dc=net
+objectClass: guacConfigGroup
+objectClass: groupOfNames
+cn: admin-shared-desktop
+guacConfigProtocol: rdp
+guacConfigParameter: hostname=admin-desktop-shared
+guacConfigParameter: port=3389
+guacConfigParameter: ignore-cert=true
+member: cn=Philip Almueti,ou=users,dc=hgvsupport,dc=ddns,dc=net
+seeAlso: cn=administrator,ou=roles,dc=hgvsupport,dc=ddns,dc=net
+
+dn: cn=support-shared-desktop,ou=guacamole,ou=services,dc=hgvsupport,dc=ddns,dc=net
+objectClass: guacConfigGroup
+objectClass: groupOfNames
+cn: support-shared-desktop
+guacConfigProtocol: rdp
+guacConfigParameter: hostname=support-desktop-shared
+guacConfigParameter: port=3389
+guacConfigParameter: ignore-cert=true
+member: cn=Philip Almueti,ou=users,dc=hgvsupport,dc=ddns,dc=net
+seeAlso: cn=support,ou=roles,dc=hgvsupport,dc=ddns,dc=net
+
+dn: cn=technical-shared-desktop,ou=guacamole,ou=services,dc=hgvsupport,dc=ddns,dc=net
+objectClass: guacConfigGroup
+objectClass: groupOfNames
+cn: technical-shared-desktop
+guacConfigProtocol: rdp
+guacConfigParameter: hostname=technical-desktop-shared
+guacConfigParameter: port=3389
+guacConfigParameter: ignore-cert=true
+member: cn=Philip Almueti,ou=users,dc=hgvsupport,dc=ddns,dc=net
+seeAlso: cn=technical,ou=roles,dc=hgvsupport,dc=ddns,dc=net
