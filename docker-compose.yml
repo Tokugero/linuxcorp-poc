@@ -31,6 +31,8 @@ services:
       - PHPLDAPADMIN_HTTPS=false
       - PHPLDAPADMIN_TRUST_PROXY_SSL=true
     restart: unless-stopped
+    depends_on: 
+      - ldap-db
 
   # Central Ingress for Web Applications
   swag-proxy:
@@ -62,6 +64,8 @@ services:
     volumes:
       - ./data/authelia-sso:/config
     restart: unless-stopped
+    depends_on:
+      - swag-proxy
 
   # Infrastructure Suite
   grafana-ui:
@@ -72,22 +76,26 @@ services:
     volumes:
       - grafana:/var/lib/grafana
       - ./data/grafana-ui/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus-db
 #  #TODO
-#  ofbiz-ui:
-#    #8080 8443
-#    container_name: ofbiz-ui
-#    build: build/ofbiz-ui/.
-#    restart: unless-stopped
-#  osticket-ui:
-#    #80
-#    container_name: osticket-ui
-#    build: build/osticket-ui/.
-#    restart: unless-stopped
-#    environment:
-#      - MYSQL_HOST=mariadb
-#      - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
-#      - MYSQL_USER=${OSTICKET_DB_USER}
-  osticket-mariadb:
+  ofbiz-ui:
+    #8080 8443
+    container_name: ofbiz-ui
+    build: build/ofbiz-ui/.
+    restart: unless-stopped
+  osticket-ui:
+    #80
+    container_name: osticket-ui
+    build: build/osticket-ui/.
+    restart: unless-stopped
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_PASSWORD=${OSTICKET_DB_PASS}
+      - MYSQL_USER=${OSTICKET_DB_USER}
+    depends_on: 
+      - osticket-db
+  osticket-db:
     #3306
     container_name: osticket-mariadb
     build: build/osticket-mariadb/.
@@ -113,7 +121,7 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ./data/dokuwiki-ui/config:/config
-  guacamole:
+  guacamole-ui:
     #8080
     container_name: guacamole
     build: build/guacamole/.
@@ -134,7 +142,11 @@ services:
       - LDAP_GROUP_BASE_DN=ou=roles,${LDAP_ROOT}
       - LDAP_MEMBER_ATTRIBUTE=memberUid
       - LDAP_MEMBER_ATTRIBUTE_TYPE=uid
-  guacamole-mariadb:
+    depends_on: 
+      - guacamole-db
+      - guacd
+      - ldap-db
+  guacamole-db:
     #3306
     container_name: guacamole-mariadb
     build: build/guacamole-mariadb/.
@@ -151,25 +163,27 @@ services:
       - ./data/guacamole-mariadb/config:/config
 
   # Monitoring Services
-#  prometheus-db:
-#    #9090
-#    container_name: prometheus-db
-#    build: build/prometheus-db/.
-#    restart: unless-stopped
-#    ports:
-#      - "9090:9090"
-#    volumes:
-#      - ./data/prometheusdb/config:/etc/prometheus/
-#      - prometheusdb:/prometheus
-#  prometheus-scraper:
-#    #9116
-#    container_name: prometheus-scraper
-#    build: build/prometheus-scraper/.
-#    restart: unless-stopped
-#    ports:
-#      - "9116:9116"
-#    volumes:
-#      - ./data/prometheus-proxy/config:/opt/config/snmp_exporter
+  prometheus-db:
+    #9090
+    container_name: prometheus-db
+    build: build/prometheus-db/.
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./data/prometheusdb/config:/etc/prometheus/
+      - prometheusdb:/prometheus
+  prometheus-ui:
+    #9116
+    container_name: prometheus-scraper
+    build: build/prometheus-scraper/.
+    restart: unless-stopped
+    ports:
+      - "9116:9116"
+    volumes:
+      - ./data/prometheus-proxy/config:/opt/config/snmp_exporter
+    depends_on:
+      - prometheus-db
 
   # Break-the-glass access
   wireguard:
@@ -198,8 +212,7 @@ services:
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     links: *links
-
-  yacht-admin:
+  yacht-ui:
     #8000
     container_name: yacht-admin
     build: build/yacht-admin/.
@@ -213,14 +226,14 @@ services:
     volumes:
       - ./data/yacht-admin:/config
       - /var/run/docker.sock:/var/run/docker.sock
-  phpmyadmin:
+  phpmyadmin-ui:
     #80
     container_name: phpmyadmin
     build: build/phpmyadmin/.
     restart: unless-stopped
     environment:
-      - PMA_HOSTS=osticket-mariadb,guacamole-mariadb
-  duplicati:
+      - PMA_HOSTS=osticket-db,guacamole-db
+  duplicati-ui:
     #8200
     container_name: duplicati
     build: build/duplicati/.
@@ -232,13 +245,14 @@ services:
     volumes:
       - ./data/duplicati/config:/config
       - backup:/backups
-
   # Generic Desktop 
   guacd:
     #4822
     container_name: guacd
     build: build/guacd/.
     restart: unless-stopped
+    depends_on: 
+      - guacamole-db
   support-desktop-shared:
     #3389
     container_name: support-desktop-shared

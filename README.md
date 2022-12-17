@@ -1,7 +1,8 @@
 # linuxcorp-poc
+
 "Corpnet" infrastructure with all Open Source infra in docker.
 
-TODO: Pin all versions in /build/*/Dockerfile
+TODO: Pin all versions in /build/\*/Dockerfile
 
 TODO: Write scripts for creating users in ldap
 
@@ -28,7 +29,13 @@ TODO: Set up Authelia in swag with ldap backing
 TODO: Configure management for spawning environments per user in ldap
 
 # Install pre-requisites
+
 ```bash
 apt-get install sudo python3-pip git
 python3 -m pip install ansible
 ```
+
+# Generate Diagram:
+
+1. Install [graphviz](https://graphviz.gitlab.io/download/)
+1. pip install requirements
